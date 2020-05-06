@@ -136,6 +136,16 @@ else
       $adminUserPwd = ConvertTo-SecureString -String (Get-AzKeyVaultSecret -VaultName $kvName -Name $sacaAdminPwdSecret).SecretValueText -AsPlainText -Force
     }
 
+    # Set Azure Service Fabric cluster
+if($environmentName -eq 'AzureCloud')
+    {
+        $azServiceFabric = '.cloudapp.usgovcloudapi.net'
+    }
+else
+    {
+        $azServiceFabric = '.cloudapp.azure.com'
+    }
+
 # Deploy template
 $deploy = New-AzResourceGroupDeployment -ResourceGroupName $rgName `
     -Name $deploymentName `

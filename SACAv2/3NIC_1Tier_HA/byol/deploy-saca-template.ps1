@@ -8,7 +8,11 @@ param (
     [Parameter(Mandatory=$true)]
     [string]$location,
     [Parameter(Mandatory=$true)]
-    [string]$instanceName
+    [string]$instanceName,
+    [Parameter(Mandatory=$true)]
+    [string]$f5Key1,
+    [Parameter(Mandatory=$true)]
+    [string]$f5Key2
     )
 
 # Function generate random password as a SecureString
@@ -30,6 +34,8 @@ $environmentName = 'AzureCloud'
 $kvName = "$deploymentPrefix-kv"
 $sacaAdminSecret = 'saca-admin-username'
 $sacaAdminPwdSecret = 'saca-admin-password'
+$sacaF5Key1Secret = 'f5-byol-key1'
+$sacaF5Key2Secret = 'f5-byol-key2'
 $deploymentName = $deploymentPrefix + "_" + (Get-Date -Format HHmmMMddyyyy)
 $pubName = 'f5-networks'
 $offerName = 'f5-big-ip-byol'
@@ -117,11 +123,23 @@ if($null -eq $kv)
       $adminUserPwd = New-RandomComplexPassword
       Set-AzKeyVaultSecret -VaultName $kvName -Name $sacaAdminSecret -SecretValue $adminUsername
       Set-AzKeyVaultSecret -VaultName $kvName -Name $sacaAdminPwdSecret -SecretValue $adminUserPwd
+      Set-AzKeyVaultSecret -VaultName $kvName -Name $sacaF5Key1Secret -SecretValue (ConvertTo-SecureString $f5Key1 -AsPlainText -Force)
+      Set-AzKeyVaultSecret -VaultName $kvName -Name $sacaF5Key2Secret -SecretValue (ConvertTo-SecureString $f5Key2 -AsPlainText -Force)
     }
 else
     {
       $adminUsername = ConvertTo-SecureString (Get-AzKeyVaultSecret -VaultName $kvName -Name $sacaAdminSecret).SecretValueText -AsPlainText -Force
       $adminUserPwd = ConvertTo-SecureString -String (Get-AzKeyVaultSecret -VaultName $kvName -Name $sacaAdminPwdSecret).SecretValueText -AsPlainText -Force
+    }
+
+    # Set Azure Service Fabric cluster
+if($environmentName -eq 'AzureCloud')
+    {
+        $azServiceFabric = '.cloudapp.usgovcloudapi.net'
+    }
+else
+    {
+        $azServiceFabric = '.cloudapp.azure.com'
     }
 
 # Deploy template
@@ -133,7 +151,7 @@ $deploy = New-AzResourceGroupDeployment -ResourceGroupName $rgName `
     -adminUsername $adminUsername `
     -instanceName $instanceName `
     -WindowsAdminPassword $adminUserPwd `
-    -licenseKey1 $licenseKey1 `
-    -licenseKey2 $licenseKey2 `
+    -licenseKey1 $f5Key1`
+    -licenseKey2 $f5Key2 `
     -Mode Incremental `
     -Verbose

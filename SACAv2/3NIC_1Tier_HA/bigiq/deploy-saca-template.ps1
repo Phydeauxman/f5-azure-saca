@@ -132,6 +132,16 @@ else
       $f5BigIqPwd = ConvertTo-SecureString -String (Get-AzKeyVaultSecret -VaultName $kvName -Name $f5BigIqPwdSecret).SecretValueText -AsPlainText -Force
     }
 
+# Set Azure Service Fabric cluster
+if($environmentName -eq 'AzureCloud')
+    {
+        $azServiceFabric = '.cloudapp.usgovcloudapi.net'
+    }
+else
+    {
+        $azServiceFabric = '.cloudapp.azure.com'
+    }
+
 # Deploy template
 $deploy = New-AzResourceGroupDeployment -ResourceGroupName $rgName `
     -Name $deploymentName `
@@ -143,5 +153,6 @@ $deploy = New-AzResourceGroupDeployment -ResourceGroupName $rgName `
     -bigIqUsername $f5BigIqUsername `
     -instanceName $instanceName `
     -WindowsAdminPassword $adminUserPwd `
+    -serviceFabricEndpoint $azServiceFabric `
     -Mode Incremental `
     -Verbose
