@@ -151,7 +151,7 @@ $deploy = New-AzResourceGroupDeployment -ResourceGroupName $rgName `
     -adminUsername $adminUsername `
     -instanceName $instanceName `
     -WindowsAdminPassword $adminUserPwd `
-    -licenseKey1 $f5Key1`
+    -licenseKey1 $f5Key1 `
     -licenseKey2 $f5Key2 `
     -Mode Incremental `
     -Verbose

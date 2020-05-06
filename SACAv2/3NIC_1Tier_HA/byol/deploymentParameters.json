@@ -18,13 +18,13 @@
         "value": "OPTIONAL"
       },
       "declarationUrl": {
-        "value": "https://raw.githubusercontent.com/Mikej81/f5-azure-saca/2.6.1/SACAv2/AS3/paygsccaBaseline.json"
+        "value": "https://raw.githubusercontent.com/Phydeauxman/f5-azure-saca/master/SACAv2/AS3/paygsccaBaseline.json"
       },
       "enableNetworkFailover": {
         "value": "Yes"
       },
       "gatewayAddressSubnet": {
-        "value": "192.168.0.0/24"
+        "value": "10.3.0.0/24"
       },
       "instanceName": {
         "value": "age2etst"
@@ -39,22 +39,22 @@
         "value": "Per-protocol"
       },
       "managementAddressSubnet": {
-        "value": "192.168.4.0/24"
+        "value": "10.3.4.0/24"
       },
       "managementAddressStartIP": {
-        "value": "192.168.4.4"
+        "value": "10.3.4.4"
       },
       "northTrustedAddressStartIP": {
-        "value": "192.168.3.4"
+        "value": "10.3.3.4"
       },
       "northTrustedAddressSubnet": {
-        "value": "192.168.3.0/24"
+        "value": "10.3.3.0/24"
       },
       "northUntrustedAddressStartIP": {
-        "value": "192.168.2.4"
+        "value": "10.3.2.4"
       },
       "northUntrustedAddressSubnet": {
-        "value": "192.168.2.0/24"
+        "value": "10.3.2.0/24"
       },
       "ntpServer": {
         "value": "0.pool.ntp.org"
@@ -81,7 +81,7 @@
         "value": "UTC"
       },
       "vdmsAddressSubnet": {
-        "value": "192.168.4.0/24"
+          "value": "10.3.1.0/24"
       }
   }
 }
