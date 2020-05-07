@@ -1,0 +1,12 @@
+Get token:
+request=$(curl -ks -X POST -d '{"username":"xadmin", "password":"2018F5@Networks!!", "loginProviderName":"local"}' https://mjcbiq01.usgovvirginia.usgovcloudapi.net/mgmt/shared/authn/login)
+
+Store token and refresh token in variables:
+token=$(echo $request | jq '.token.token')
+refresh_token=$(echo $request | jq '.refreshToken.token')
+
+Refresh token:
+token=$(curl -ks -X POST -d '{"refreshToken":'$refresh_token'}' https://mjcbiq01.usgovvirginia.usgovcloudapi.net/mgmt/shared/authn/exchange | jq .token.token)
+
+POST to assign a license to an unmanged BIG-IP
+curl -v -ks -H "X-F5-Auth-Token: $token" https://mjcbiq01.usgovvirginia.usgovcloudapi.net/mgmt/cm/device/tasks/licensing/pool/member-management/ | {"licensePoolName":"Pool", "command":"assign", "address":"10.1.4.4", "user":"xadmin", "password":"2018F5@Networks!!"}
